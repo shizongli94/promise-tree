@@ -1,52 +1,5 @@
 "use strict";
 
-function TreePromise (executor){
-    if (typeof executor === "function"){
-        try{
-            this.promise = new Promise(executor);
-        }catch (e){
-            throw new Error("Function passed in constructor is not valid!\n" + e.toString());
-        }
-    }else if(executor instanceof Promise){
-        this.promise = executor;
-    }else{
-        throw new TypeError("TreePromise(executor): executor is not a function");
-    }
-    this.resolve = (value) => {
-        this.promise.resolve(value);
-    };
-    this.reject = (reason) => {
-        this.promise.reject(reason);
-    };
-    this.all = (iterable) => {
-        this.promise.all(iterable);
-    };
-    this.race = (iterable) => {
-        this.promise.race(iterable);
-    };
-    this.then = (onFulfilled, onRejected) => {
-        if (!onRejected) {
-            const promise = this.promise.then((value) => {
-                return onFulfilled(value);
-            });
-            return new TreePromise(promise);
-        } else {
-            const promise = this.promise.then((value) => {
-                return onFulfilled(value);
-            }, (reason) => {
-                return onRejected(reason);
-            });
-            return new TreePromise(promise);
-        }
-    };
-    this.catch = (onRejected) => {
-        const promise = this.promise.catch((reason) => {
-            return onRejected(reason);
-        });
-        return new TreePromise(promise);
-    };
-}
-
 function Branch () {
     this.do_list = [];
     this.then = (onFulfilled, onRejected) => {
@@ -67,7 +20,6 @@ function Branch () {
 }
 
 
-module.exports.TreePromise = TreePromise;
 module.exports.Branch = Branch;
 module.exports.condition = {
     bool : undefined,
@@ -82,7 +34,7 @@ module.exports.condition = {
         if (!(this.branch instanceof Branch)) throw new TypeError("Tree branch is not an insance of Branch");
         if (typeof this.then !== "boolean") throw new TypeError("Indicator for origin is not boolean");
         if (this.bool){
-            let tree_promise = new TreePromise((resolve, reject)=>{
+            let promise = new Promise((resolve, reject)=>{
                 if (this.then){
                     resolve(this.value);
                 }else{
@@ -93,13 +45,14 @@ module.exports.condition = {
                 if (this.branch.do_list[i].name == "then"){
                     const onFulfilled = this.branch.do_list[i].onFulfilled;
                     const onRejected = this.branch.do_list[i].onRejected;
-                    tree_promise = tree_promise.then(onFulfilled, onRejected);
+                    promise = promise.then(onFulfilled, onRejected);
                 }else{
                     const onRejected = this.branch.do_list[i].onRejected;
-                    tree_promise = tree_promise.catch(onRejected);
+                    promise = promise.catch(onRejected);
                 }
             }
             this.branch.do_list = [];
+            this.branch.promise = promise;
             this.bool = undefined;
             this.branch = undefined;
             this.value = undefined;
