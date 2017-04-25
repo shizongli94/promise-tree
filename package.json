@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/shizongli94/branch-promise/issues"
   },
-  "homepage": "https://github.com/shizongli94/branch-promise#readme"
+  "homepage": "https://github.com/shizongli94/branch-promise#readme",
+  "dependencies": {}
 }
