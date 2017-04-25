@@ -1,7 +1,5 @@
 "use strict";
 
-let current_promise = undefined;
-
 function TreePromise (executor){
     if (typeof executor === "function"){
         try{
@@ -14,7 +12,6 @@ function TreePromise (executor){
     }else{
         throw new TypeError("TreePromise(executor): executor is not a function");
     }
-    current_promise = this.promise;
     this.resolve = (value) => {
         this.promise.resolve(value);
     };
@@ -49,8 +46,6 @@ function TreePromise (executor){
         return new TreePromise(promise);
     };
 }
-TreePromise.prototype.current_promise = undefined;
-
 
 function Branch () {
     this.do_list = [];
