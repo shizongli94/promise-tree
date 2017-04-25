@@ -74,28 +74,66 @@ function Branch () {
 
 module.exports.TreePromise = TreePromise;
 module.exports.Branch = Branch;
-module.exports.condition = (bool, branch, value, then) => {
-    if (typeof bool !== "boolean") throw new TypeError("TreePromise.condition(bool, branch): The first parameter must be of boolean type");
-    if (!(branch instanceof Branch)) throw new TypeError("TreePromise.condition(bool, branch): The second parameter must be a Branch object");
-    if (bool){
-        let tree_promise = new TreePromise((resolve, reject)=>{
-            if (then){
-                resolve(value);
-            }else{
-                reject(value);
+module.exports.condition = {
+    bool : undefined,
+    branch:undefined,
+    value:undefined,
+    then:undefined,
+    ready : function () {
+        return (this.bool !== undefined && this.branch !== undefined && this.value !== undefined && this.then !== undefined);
+    },
+    execute : function() {
+        if (typeof this.bool !== "boolean") throw new TypeError("Branching criterion is not boolean");
+        if (!(this.branch instanceof Branch)) throw new TypeError("Tree branch is not an insance of Branch");
+        if (typeof this.then !== "boolean") throw new TypeError("Indicator for origin is not boolean");
+        if (this.bool){
+            let tree_promise = new TreePromise((resolve, reject)=>{
+                if (this.then){
+                    resolve(this.value);
+                }else{
+                    reject(this.value);
+                }
+            });
+            for (let i=0; i<this.branch.do_list.length; i++){
+                if (this.branch.do_list[i].name == "then"){
+                    const onFulfilled = this.branch.do_list[i].onFulfilled;
+                    const onRejected = this.branch.do_list[i].onRejected;
+                    tree_promise = tree_promise.then(onFulfilled, onRejected);
+                }else{
+                    const onRejected = this.branch.do_list[i].onRejected;
+                    tree_promise = tree_promise.catch(onRejected);
+                }
             }
-        });
-        for (let i=0; i<branch.do_list.length; i++){
-            if (branch.do_list[i].name == "then"){
-                const onFulfilled = branch.do_list[i].onFulfilled;
-                const onRejected = branch.do_list[i].onRejected;
-                tree_promise = tree_promise.then(onFulfilled, onRejected);
-            }else{
-                const onRejected = branch.do_list[i].onRejected;
-                tree_promise = tree_promise.catch(onRejected);
-            }
+            this.branch.do_list = [];
+            this.bool = undefined;
+            this.branch = undefined;
+            this.value = undefined;
+            this.then = undefined;
         }
-    }
+    },
+    "if" : function(bool) {
+        this.bool = bool;
+        if (this.ready()) this.execute();
+        return this;
+    },
+    unless : function (bool) {
+        this.if(!bool);
+    },
+    from : function (then) {
+        this.then = then;
+        if (this.ready()) this.execute();
+        return this;
+    },
+    "with" : function(value) {
+        this.value = value;
+        if (this.ready()) this.execute();
+        return this;
+    },
+    along : function(branch) {
+        this.branch = branch;
+        if (this.ready()) this.execute();
+        return this;
+    },
 };
 
 
