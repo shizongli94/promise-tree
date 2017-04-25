@@ -19,7 +19,6 @@ function Branch () {
     };
 }
 
-
 module.exports.Branch = Branch;
 module.exports.condition = {
     bool : undefined,
@@ -83,6 +82,7 @@ module.exports.condition = {
         return this;
     },
 };
+
 
 
 

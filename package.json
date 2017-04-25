@@ -1,5 +1,5 @@
 {
-  "name": "promise-branch",
+  "name": "promise-tree",
   "version": "1.0.0",
   "description": "Enables conditional promise usage in JavaScript",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shizongli94/branch-promise.git"
+    "url": "git+https://github.com/shizongli94/promise-tree.git"
   },
   "keywords": [
     "javascript",
@@ -16,10 +16,10 @@
     "promise"
   ],
   "author": "Zongli Shi <yishisenta@me.com> (https://github.com/shizongli94)",
-  "license": "ISC",
+  "license": "GNU GPLv3",
   "bugs": {
     "url": "https://github.com/shizongli94/branch-promise/issues"
   },
-  "homepage": "https://github.com/shizongli94/branch-promise#readme",
+  "homepage": "https://github.com/shizongli94/promise-tree.git#readme",
   "dependencies": {}
 }
