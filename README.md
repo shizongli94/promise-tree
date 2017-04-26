@@ -168,6 +168,47 @@ condition.unless(false).with("I am drinking milkshake when I am typing this read
 condition.along(lonely_forever).if(!("Milkshake" != " tastes good"));
 condition.with("I don't even know where the cute lonely_forever is").unless(false);
 ```
+
+## Utility
+### Bank - JSON object
+Bank is a utility object which enables user to pass information from one place to another in a promise or branch chain. The passing is not sequential and independent of the chain.
+```
+const promise = new Promise((resolve, reject) => {
+    resolve(250);
+});
+
+const tag = "joke";
+const group = "bad joke";
+
+promise
+    .then((value) => {
+        // store value (250) in bank
+        bank.deposit(tag, value , group); // Tag is a string to identify item. Group is a string to identify group
+        return value;
+    })
+    .then((value) => {
+        console.log("a", 2);
+        value++;
+        throw value;
+    })
+    .catch((reason) => {
+        console.log("a", 3);
+        reason++;
+        return reason;
+    })
+    .then((value) => {
+        console.log("a", 4);
+        value++;
+        
+        console.log("stored item", bank.checkout(tag, group)); // retrieve stored item from bank
+        return value;
+    })
+    .then((value) => {
+        console.log("a", 5);
+        return value;
+    });
+```
+You may leave out group name when using bank.deposit. However, when doing so, you should also leave out group name in bank.checkout
 ## Authors
 
 * **Zongli Shi** - *Initial work* - [shizongli94](https://github.com/shizongli94)
