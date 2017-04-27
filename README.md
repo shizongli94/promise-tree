@@ -2,11 +2,13 @@
 
 Promise-tree enables writing of conditional javascript promise without nesting.
 
-## Promise Stem
+## Related Package - Promise Stem
 This is another package I write which compliments the usage of promise-tree. Instead of branching from a single point, promise-stem takes results from separate promise chains and put into a single chain.
 Links for promise-stem below
+
 ### GitHub
 https://github.com/shizongli94/promise-stem
+
 ### NPM
 https://www.npmjs.com/package/promise-stem
 
