@@ -1,5 +1,4 @@
 "use strict";
-
 function Branch () {
     this.do_list = [];
     this.then = (onFulfilled, onRejected) => {
@@ -51,7 +50,6 @@ module.exports.condition = {
                 }
             }
             this.branch.do_list = [];
-            this.branch.promise = promise;
             this.bool = undefined;
             this.branch = undefined;
             this.value = undefined;
@@ -81,51 +79,6 @@ module.exports.condition = {
         if (this.ready()) this.execute();
         return this;
     },
-};
-module.exports.bank = {
-    groups : {},
-    generic_items : {},
-    deposit : function (tag, item, group) {
-        if (typeof group !== "string" && group !== undefined)
-            throw new TypeError("bank.deposit: group must be of type String");
-        if (typeof tag !== "string")
-            throw new TypeError("bank.deposit: tag must be of type String");
-
-        if (group === undefined){
-            this.generic_items[tag] = item;
-            return this;
-        }
-
-        if (group in this.groups){
-            this.groups[group][tag] = item;
-        }else{
-            this.groups[group] = {};
-            this.groups[group][tag] = item;
-        }
-        return this;
-    },
-    checkout : function (tag, group) {
-        if (typeof group !== "string" && group !== undefined)
-            throw new TypeError("bank.deposit: group must be of type String");
-        if (typeof tag !== "string")
-            throw new TypeError("bank.deposit: tag must be of type String");
-
-        if (group === undefined){
-            if (tag in this.generic_items)
-                return this.generic_items[tag];
-            else
-                throw new ReferenceError("bank.checkout: Tag not found. Make sure you have the correct tag name");
-        }
-
-        if (group in this.groups) {
-            if (tag in this.groups[group])
-                return this.groups[group][tag];
-            else
-                throw new ReferenceError("bank.checkout: Tag not found. Make sure you have the correct tag name");
-        }else{
-            throw new ReferenceError("bank.checkout: Group not found. Make sure you have the correct group name");
-        }
-    }
 };
 
 
