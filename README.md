@@ -122,12 +122,6 @@ branch
   .then((value) => { /* your code goes here */})
   .catch((reason) => { /* your code goes here */});
 ```
-Retrieve Promise object for later use
-```
-const promise = branch.promise;
-console.log(branch.promise instanceof Promise); // true
-console.log(branch instanceof Promise); // false
-```
 ### Condition - JSON object
 Include 
 ```
