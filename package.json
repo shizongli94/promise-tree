@@ -1,6 +1,6 @@
 {
   "name": "promise-tree",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Enables conditional promise usage in JavaScript",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "Zongli Shi <yishisenta@me.com> (https://github.com/shizongli94)",
   "license": "GNU GPLv3",
   "bugs": {
-    "url": "https://github.com/shizongli94/branch-promise/issues"
+    "url": "https://github.com/shizongli94/promose-tree/issues"
   },
   "homepage": "https://github.com/shizongli94/promise-tree.git#readme",
   "dependencies": {}
